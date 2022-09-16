@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="sc">
+        <createTable tableName="SC_COMPANY">
+            <column name="company_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SC_COMPANY"/>
+            </column>
+            <column name="REGISTRATION_ID" type="VARCHAR(100)"/>
+            <column name="COMPANY_TYPE" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="sc">
+        <createTable tableName="SC_INDIVIDUAL">
+            <column name="individual_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SC_INDIVIDUAL"/>
+            </column>
+            <column name="FIRST_NAME" type="VARCHAR(100)"/>
+            <column name="LAST_NAME" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="sc">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="SC_COMPANY"
+                                 constraintName="FK_SC_COMPANY_ON_COMPANY" referencedColumnNames="ID"
+                                 referencedTableName="SC_CUSTOMER"/>
+    </changeSet>
+    <changeSet id="4" author="sc">
+        <addForeignKeyConstraint baseColumnNames="individual_id" baseTableName="SC_INDIVIDUAL"
+                                 constraintName="FK_SC_INDIVIDUAL_ON_INDIVIDUAL" referencedColumnNames="ID"
+                                 referencedTableName="SC_CUSTOMER"/>
+    </changeSet>
+    <changeSet id="5" author="sc">
+        <dropColumn columnName="company_type" tableName="sc_customer"/>
+
+        <dropColumn columnName="first_name" tableName="sc_customer"/>
+
+        <dropColumn columnName="last_name" tableName="sc_customer"/>
+
+        <dropColumn columnName="registration_id" tableName="sc_customer"/>
+    </changeSet>
+    <changeSet id="6" author="sc">
+        <dropColumn columnName="dtype" tableName="sc_planet"/>
+    </changeSet>
+</databaseChangeLog>

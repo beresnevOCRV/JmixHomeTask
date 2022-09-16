@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="sc">
+        <addColumn tableName="SC_WAYBILL_ITEM">
+            <column name="ID" type="UUID"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="2" author="sc">
+        <dropColumn columnName="GRADE" tableName="SC_CUSTOMER"/>
+    </changeSet>
+    <changeSet id="3" author="sc">
+        <addColumn tableName="SC_CUSTOMER">
+            <column name="GRADE" type="INT"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="4" author="sc">
+        <dropColumn columnName="GRADE" tableName="SC_DISCOUNTS"/>
+    </changeSet>
+    <changeSet id="5" author="sc">
+        <addColumn tableName="SC_DISCOUNTS">
+            <column name="GRADE" type="INT"/>
+        </addColumn>
+    </changeSet>
+    <!--<changeSet id="7" author="sc">
+        <dropColumn tableName="SC_WAYBILL_ITEM" columnName="NUMBER"/>
+    </changeSet>
+    <changeSet id="8" author="sc">
+        <addColumn tableName="SC_WAYBILL_ITEM">
+            <column name="NUMBER" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>-->
+    <changeSet id="6" author="sc">
+        <dropPrimaryKey tableName="SC_WAYBILL_ITEM"/>
+    </changeSet>
+    <changeSet id="7" author="sc">
+        <addPrimaryKey columnNames="ID" constraintName="PK_SC_WAYBILL_ITEM" tableName="SC_WAYBILL_ITEM"/>
+    </changeSet>
+</databaseChangeLog>
