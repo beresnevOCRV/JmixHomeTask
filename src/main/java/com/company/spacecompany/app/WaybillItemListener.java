@@ -29,7 +29,8 @@ public class WaybillItemListener {
                 .query("select w from sc_Waybill w where w.id = :id")
                 .parameter("id", waybillItem.getWaybill().getId())
                 .fetchPlan(fpb -> fpb.addFetchPlan(FetchPlan.BASE)
-                        .add("item"))
+                        .add("item", FetchPlan.BASE)
+                        .add("shipper", FetchPlan.BASE))
                 .one();
 
         if (weightChanged) {

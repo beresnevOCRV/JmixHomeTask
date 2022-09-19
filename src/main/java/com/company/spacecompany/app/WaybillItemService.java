@@ -70,20 +70,8 @@ public class WaybillItemService {
         waybill.setTotalCharge(totalCharge);
     }
 
-    public Waybill calcTotals(Waybill waybill) {
-
-        Waybill item = dataManager.load(Waybill.class)
-                .query("select w from sc_Waybill w where w.id = :id")
-                .parameter("id", waybill.getId())
-                .fetchPlan(fpb -> fpb.addFetchPlan(FetchPlan.BASE)
-                        .add("item"))
-                .one();
-
-        calcTotalWeight(item);
-        calcTotalCharge(item);
-
-        dataManager.save(item);
-
-        return item;
+    public void calcTotals(Waybill waybill) {
+        calcTotalWeight(waybill);
+        calcTotalCharge(waybill);
     }
 }

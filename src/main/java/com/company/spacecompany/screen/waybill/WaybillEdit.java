@@ -217,14 +217,16 @@ public class WaybillEdit extends StandardEditor<Waybill> {
 
         newItems.forEach(item -> item.setNumber(item.getNumber() - 1));
 
-        Waybill waybill = waybillItemService.calcTotals(waybillDc.getItem());
+        Waybill waybill = items.get(0).getWaybill();
+
+        waybillItemService.calcTotals(waybill);
         totalChargeField.setValue(waybill.getTotalCharge());
         totalWeightField.setValue(waybill.getTotalWeight());
     }
 
     @Install(to = "itemsTable.edit", subject = "afterCommitHandler")
     private void itemsTableEditAfterCommitHandler(WaybillItem waybillItem) {
-        Waybill waybill = waybillDc.getItem();
+        Waybill waybill = waybillItem.getWaybill();
         waybillItemService.calcTotals(waybill);
 
         totalChargeField.setValue(waybill.getTotalCharge());
@@ -233,7 +235,7 @@ public class WaybillEdit extends StandardEditor<Waybill> {
 
     @Install(to = "itemsTable.create", subject = "afterCommitHandler")
     private void itemsTableCreateAfterCommitHandler(WaybillItem waybillItem) {
-        Waybill waybill = waybillDc.getItem();
+        Waybill waybill = waybillItem.getWaybill();
         waybillItemService.calcTotals(waybill);
 
         totalChargeField.setValue(waybill.getTotalCharge());
