@@ -23,7 +23,12 @@ public class PlanetImportService {
             Planet planetToSave = (planet != null) ? planet : dataManager.create(Planet.class);
 
             planetToSave.setName(planetToSave.getName() != null ? planetToSave.getName() : s[0]);
-            planetToSave.setRings(true);
+            planetToSave.setMass(Double.valueOf(s[2]));
+            planetToSave.setSemiMajorAxis(Double.valueOf(s[3]));
+            planetToSave.setOrbitalPeriod(Double.valueOf(s[4]));
+            planetToSave.setRotationPeriod(Double.valueOf(s[6]));
+            planetToSave.setRings(!s[10].equals("no"));
+
             planets.add(planetToSave);
         }
         dataManager.save(planets.toArray());

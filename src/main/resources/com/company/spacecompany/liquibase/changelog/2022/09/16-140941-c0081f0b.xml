@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="sc">
+        <addColumn tableName="SC_WAYBILL_ITEM">
+            <column name="NUMBER_" type="INT"/>
+        </addColumn>
+
+        <addNotNullConstraint columnName="NUMBER_" defaultNullValue="0" tableName="SC_WAYBILL_ITEM"/>
+    </changeSet>
+    <changeSet id="2" author="sc">
+        <dropColumn columnName="number" tableName="sc_waybill_item"/>
+    </changeSet>
+</databaseChangeLog>

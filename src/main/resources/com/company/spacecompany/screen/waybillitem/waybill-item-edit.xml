@@ -28,7 +28,7 @@
                 width="800"/>
     <layout spacing="true" expand="editActions">
         <hbox id="formBox" spacing="true">
-            <hbox spacing="true" width="100%">
+            <hbox spacing="true">
                 <form id="form" dataContainer="waybillItemDc">
                     <column width="350px">
                         <textField id="numberField" property="number" editable="false"/>
@@ -37,13 +37,13 @@
                         <textField id="dimLengthField" property="dim.length"/>
                         <textField id="dimWidthField" property="dim.width"/>
                         <textField id="dimHeightField" property="dim.height"/>
-                        <textField id="chargeField" property="charge"/>
+                        <textField id="chargeField" property="charge" editable="false"/>
                     </column>
                 </form>
             </hbox>
-            <vbox spacing="true" width="100%">
-                <button height="10px" width="10px" icon="ARROW_UP"/>
-                <button height="10px" width="10px" icon="ARROW_DOWN"/>
+            <vbox spacing="true">
+                <button id="itemUp" height="20px" width="5px" icon="ARROW_UP"/>
+                <button id="itemDown" height="20px" width="5px" icon="ARROW_DOWN"/>
             </vbox>
         </hbox>
         <hbox id="editActions" spacing="true">

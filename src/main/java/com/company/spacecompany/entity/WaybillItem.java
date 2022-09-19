@@ -12,18 +12,19 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @JmixEntity
-@Table(name = "SC_WAYBILL_ITEM")
+@Table(name = "SC_WAYBILL_ITEM", indexes = {
+        @Index(name = "IDX_SC_WAYBILL_ITEM_WAYBILL", columnList = "WAYBILL_ID")
+})
 @Entity(name = "sc_WaybillItem")
 public class WaybillItem {
 
     @JmixGeneratedValue
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "NUMBER", nullable = false)
     @NotNull
+    @Column(name = "NUMBER_", nullable = false)
     private Integer number;
 
     @InstanceName
@@ -52,28 +53,28 @@ public class WaybillItem {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Waybill waybill;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
     public Waybill getWaybill() {
         return waybill;
     }
 
     public void setWaybill(Waybill waybill) {
         this.waybill = waybill;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public Dimensions getDim() {

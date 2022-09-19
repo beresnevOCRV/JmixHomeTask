@@ -61,7 +61,7 @@ public class Waybill {
 
     @Composition
     @OneToMany(mappedBy = "waybill")
-    private List<WaybillItem> items;
+    private List<WaybillItem> item;
 
     @PositiveOrZero
     @JmixProperty
@@ -72,6 +72,14 @@ public class Waybill {
     @JmixProperty
     @Transient
     private BigDecimal totalCharge;
+
+    public List<WaybillItem> getItem() {
+        return item;
+    }
+
+    public void setItem(List<WaybillItem> item) {
+        this.item = item;
+    }
 
     public Spaceport getDestinationPort() {
         return destinationPort;
@@ -95,14 +103,6 @@ public class Waybill {
 
     public void setCarrier(Carrier carrier) {
         this.carrier = carrier;
-    }
-
-    public List<WaybillItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<WaybillItem> items) {
-        this.items = items;
     }
 
     public void setTotalWeight(Double totalWeight) {

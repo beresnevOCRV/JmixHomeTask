@@ -1,12 +1,16 @@
 package com.company.spacecompany.screen.planet;
 
 import com.company.spacecompany.app.PlanetImportService;
+import com.company.spacecompany.security.specific.EnablePlanetImport;
+import io.jmix.core.AccessManager;
+import io.jmix.core.accesscontext.SpecificOperationAccessContext;
 import io.jmix.ui.component.FileStorageUploadField;
 import io.jmix.ui.component.SingleFileUploadField;
 import io.jmix.ui.model.CollectionLoader;
 import io.jmix.ui.screen.*;
 import com.company.spacecompany.entity.Planet;
 import io.jmix.ui.upload.TemporaryStorage;
+import liquibase.pro.packaged.E;
 import liquibase.repackaged.com.opencsv.CSVReader;
 import liquibase.repackaged.com.opencsv.exceptions.CsvException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,8 @@ public class PlanetBrowse extends StandardLookup<Planet> {
     private FileStorageUploadField importPlanets;
     @Autowired
     private CollectionLoader<Planet> planetsDl;
+    @Autowired
+    private AccessManager accessManager;
 
     @Subscribe("importPlanets")
     public void onImportPlanetsFileUploadSucceed(SingleFileUploadField.FileUploadSucceedEvent event) {
@@ -51,4 +57,15 @@ public class PlanetBrowse extends StandardLookup<Planet> {
             }
         }
     }
+
+    @Subscribe
+    public void onAfterInit(AfterInitEvent event) {
+
+        SpecificOperationAccessContext accessContext =
+                new SpecificOperationAccessContext("enablePlanetImport");
+        accessManager.applyRegisteredConstraints(accessContext);
+
+        importPlanets.setEditable(accessContext.isPermitted());
+    }
+
 }

@@ -24,8 +24,6 @@
                   caption="msg://com.company.spacecompany.screen.spaceport/spaceportBrowse.menu"/>
             <item screen="sc_Carrier.browse" caption="msg://com.company.spacecompany.screen.carrier/carrierBrowse.menu"/>
             <item screen="sc_Waybill.browse" caption="msg://com.company.spacecompany.screen.waybill/waybillBrowse.menu"/>
-            <item screen="sc_WaybillItem.browse"
-                  caption="msg://com.company.spacecompany.screen.waybillitem/waybillItemBrowse.menu"/>
         </menu>
     </menu>
 

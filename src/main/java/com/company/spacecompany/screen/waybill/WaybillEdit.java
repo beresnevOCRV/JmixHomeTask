@@ -1,5 +1,6 @@
 package com.company.spacecompany.screen.waybill;
 
+import com.company.spacecompany.app.WaybillItemService;
 import com.company.spacecompany.entity.*;
 import com.company.spacecompany.screen.carrier.CarrierBrowse;
 import com.company.spacecompany.screen.company.CompanyBrowse;
@@ -8,17 +9,22 @@ import io.jmix.core.DataManager;
 import io.jmix.core.FetchPlan;
 import io.jmix.core.FetchPlans;
 import io.jmix.core.Metadata;
+import io.jmix.ui.RemoveOperation;
 import io.jmix.ui.ScreenBuilders;
 import io.jmix.ui.action.Action;
 import io.jmix.ui.component.*;
+import io.jmix.ui.component.data.TableItems;
 import io.jmix.ui.model.CollectionContainer;
 import io.jmix.ui.model.CollectionLoader;
+import io.jmix.ui.model.CollectionPropertyContainer;
 import io.jmix.ui.model.InstanceContainer;
 import io.jmix.ui.screen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nullable;
+import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @UiController("sc_Waybill.edit")
 @UiDescriptor("waybill-edit.xml")
@@ -57,6 +63,18 @@ public class WaybillEdit extends StandardEditor<Waybill> {
     private EntityPicker carrierField;
     @Autowired
     private ComboBox destinationSpaceObject;
+    @Autowired
+    private Table<WaybillItem> itemsTable;
+    @Autowired
+    private InstanceContainer<Waybill> waybillDc;
+    @Autowired
+    private WaybillItemService waybillItemService;
+    @Autowired
+    private TextField<BigDecimal> totalChargeField;
+    @Autowired
+    private TextField<Double> totalWeightField;
+    @Autowired
+    private CollectionPropertyContainer<WaybillItem> itemsDc;
 
     @Subscribe
     public void onInit(InitEvent event) {
@@ -180,12 +198,45 @@ public class WaybillEdit extends StandardEditor<Waybill> {
                             fpb.addFetchPlan(FetchPlan.BASE).add("ports"))
                     .list();
 
-            carriersDc.setItems(carriers);
-            screenBuilders.lookup(carrierField)
-                    .withContainer(carriersDc)
+            CarrierBrowse carrierScreen = (CarrierBrowse) screenBuilders.lookup(Carrier.class, this)
+                    .withField(carrierField)
                     .build()
                     .show();
         }
     }
-    
+
+    @Install(to = "itemsTable.remove", subject = "afterActionPerformedHandler")
+    private void itemsTableRemoveAfterActionPerformedHandler(RemoveOperation.AfterActionPerformedEvent<WaybillItem> afterActionPerformedEvent) {
+        List<WaybillItem> items = afterActionPerformedEvent.getItems();
+
+        Collection<WaybillItem> waybillItems = itemsTable.getItems().getItems();
+
+        List<WaybillItem> newItems = waybillItems.stream()
+                .filter(f -> f.getNumber() > items.get(0).getNumber())
+                .collect(Collectors.toList());
+
+        newItems.forEach(item -> item.setNumber(item.getNumber() - 1));
+
+        Waybill waybill = waybillItemService.calcTotals(waybillDc.getItem());
+        totalChargeField.setValue(waybill.getTotalCharge());
+        totalWeightField.setValue(waybill.getTotalWeight());
+    }
+
+    @Install(to = "itemsTable.edit", subject = "afterCommitHandler")
+    private void itemsTableEditAfterCommitHandler(WaybillItem waybillItem) {
+        Waybill waybill = waybillDc.getItem();
+        waybillItemService.calcTotals(waybill);
+
+        totalChargeField.setValue(waybill.getTotalCharge());
+        totalWeightField.setValue(waybill.getTotalWeight());
+    }
+
+    @Install(to = "itemsTable.create", subject = "afterCommitHandler")
+    private void itemsTableCreateAfterCommitHandler(WaybillItem waybillItem) {
+        Waybill waybill = waybillDc.getItem();
+        waybillItemService.calcTotals(waybill);
+
+        totalChargeField.setValue(waybill.getTotalCharge());
+        totalWeightField.setValue(waybill.getTotalWeight());
+    }
 }

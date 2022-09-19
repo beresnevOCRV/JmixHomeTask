@@ -13,7 +13,7 @@
                 <property name="departurePort" fetchPlan="_instance_name"/>
                 <property name="destinationPort" fetchPlan="_instance_name"/>
                 <property name="carrier" fetchPlan="_instance_name"/>
-                <property name="items" fetchPlan="_instance_name"/>
+                <property name="item" fetchPlan="_base"/>
                 <property name="totalWeight"/>
                 <property name="totalCharge"/>
             </fetchPlan>
